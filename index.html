@@ -660,7 +660,8 @@ function calculateAndShow() {
 }
 
 function submitToSheets(score, balance, load, credits, fR, faR, sR, cR, gR, fingerScore, risk) {
-  if (SHEETS_URL === "https://script.google.com/macros/s/AKfycby7BwSeh0Spu1TieotgVa6h2DY1NQnjPPHvm44Ba48gSJTGeQBfQe-5A3-FvPAibdI/exec") {
+  const SHEETS_URL = "https://script.google.com/macros/s/AKfycby7BwSeh0Spu1TieotgVa6h2DY1NQnjPPHvm44Ba48gSJTGeQBfQe-5A3-FvPAibdI/exec";
+  if (SHEETS_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
     document.getElementById("submitNotice").textContent = "⚠️ Google Sheets URL not configured — data not saved.";
     return;
   }
