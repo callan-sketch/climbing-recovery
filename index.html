@@ -433,7 +433,7 @@
 
 <script>
 const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzc6FHLtuCKRx8LQ6w2SKm2XVaBjhf1Suw5m7sg3DGAqYnKoQix_trxKQaq664JylE/exec";
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1-FENufMgGAeprv_QTdqocOc5JhZjKp7jxmhyf2QNq1rH-iydQQC7i7RsQ5BvK6Yg933eP53It0k6/pub?gid=1962231271&single=true&output=csv"; // Same CSV URL as dashboard.html
+const SHEET_CSV_URL = "YOUR_GOOGLE_SHEET_CSV_URL_HERE"; // Same CSV URL as dashboard.html
 
 // Cumulative fatigue state
 let cumulativePenalty = 0;
@@ -466,10 +466,14 @@ function calcPenalty(hrsShort) {
 }
 
 async function fetchLastSession(name) {
-  if(SHEET_CSV_URL === "YOUR_GOOGLE_SHEET_CSV_URL_HERE") return null;
+  console.log("fetchLastSession called for:", name);
+  if(SHEET_CSV_URL === "YOUR_GOOGLE_SHEET_CSV_URL_HERE") { console.log("CSV URL not set"); return null; }
   try {
+    console.log("Fetching CSV...");
     const resp = await fetch(SHEET_CSV_URL);
+    console.log("CSV fetch status:", resp.status, resp.ok);
     const text = await resp.text();
+    console.log("CSV length:", text.length, "First 200 chars:", text.substring(0,200));
     const rows = text.split("\n").map(line => {
       const cols=[]; let cur="", inQ=false;
       for(let i=0;i<line.length;i++){
@@ -486,21 +490,25 @@ async function fetchLastSession(name) {
     const nameIdx = headers.indexOf("athlete_name");
     const tsIdx = headers.indexOf("timestamp");
     const scoreIdx = headers.indexOf("composite_score");
-    if(nameIdx<0||tsIdx<0||scoreIdx<0) return null;
+    console.log("Headers found:", headers.slice(0,5));
+    console.log("nameIdx:", nameIdx, "tsIdx:", tsIdx, "scoreIdx:", scoreIdx);
+    if(nameIdx<0||tsIdx<0||scoreIdx<0) { console.log("Required column not found"); return null; }
     // Find last session for this athlete
     const matches = rows.slice(1)
       .filter(r => r[nameIdx] && r[nameIdx].trim().toLowerCase() === name.toLowerCase())
       .filter(r => r[scoreIdx] && !isNaN(Number(r[scoreIdx])));
-    if(!matches.length) return null;
+    console.log("Matches found for", name, ":", matches.length);
+    if(!matches.length) { console.log("No matching rows for athlete:", name); return null; }
     // Sort by timestamp descending, take last
     matches.sort((a,b) => new Date(b[tsIdx]) - new Date(a[tsIdx]));
     const last = matches[0];
+    console.log("Last session:", last[tsIdx], "score:", last[scoreIdx]);
     return {
       timestamp: last[tsIdx],
       score: Number(last[scoreIdx]),
     };
   } catch(e) {
-    console.log("Could not fetch last session:", e);
+    console.error("Could not fetch last session - ERROR:", e.message, e);
     return null;
   }
 }
