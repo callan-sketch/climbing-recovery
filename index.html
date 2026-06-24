@@ -706,8 +706,8 @@ function submitToSheets(score,balance,load,credits,fR,faR,sR,cR,gR,fingerScore,r
     cnsReadiness:Math.round(cR),generalReadiness:Math.round(gR),compositeScore:score,
     injuryRisk:risk,recommendation:document.getElementById("recText").textContent,
     sessionRating:state.sessionRating,sentProject:state.sentProject?"Yes":"No",
-    earlyTrainingPenalty:cumulativePenalty,
     sessionNotes:document.getElementById("sessionNotes").value.trim(),
+    earlyTrainingPenalty:cumulativePenalty,
   };
   const notice=document.getElementById("submitNotice");
   notice.textContent="Saving to coach dashboard…";
