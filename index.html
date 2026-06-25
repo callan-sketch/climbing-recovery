@@ -4,6 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>CRRI — Climbing Recovery Check-In</title>
+<link rel="apple-touch-icon" href="core-logo.png" />
+<link rel="icon" type="image/png" href="core-logo.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Core CRRI" />
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Space+Mono:wght@700&display=swap');
   :root {
@@ -77,9 +82,9 @@
 </style>
 </head>
 <body>
-<header>
-  <span class="logo">CRRI</span>
-  <span>Climbing Recovery &amp; Readiness Index</span>
+<header style="flex-direction:column;align-items:flex-start;padding:12px 20px 10px;gap:4px">
+  <img src="core-logo.png" alt="Core" style="height:36px;display:block" />
+  <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--lime);letter-spacing:0.12em;font-weight:700;margin-top:2px">CRRI &nbsp;·&nbsp; Climbing Recovery &amp; Readiness Index</div>
 </header>
 
 <div class="container">
@@ -432,8 +437,8 @@
 <footer>CRRI · Climbing Recovery &amp; Readiness Index · High Performance Climbing Academy</footer>
 
 <script>
-const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxvGyXMc82wCs7DdLy3u3fn9Xrm4aNmXXGCo8bzgYr0Mvlkvx6k-qQe3dVgDm4LPdo/exec";
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1-FENufMgGAeprv_QTdqocOc5JhZjKp7jxmhyf2QNq1rH-iydQQC7i7RsQ5BvK6Yg933eP53It0k6/pub?gid=1962231271&single=true&output=csv"; // Same CSV URL as dashboard.html
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzc6FHLtuCKRx8LQ6w2SKm2XVaBjhf1Suw5m7sg3DGAqYnKoQix_trxKQaq664JylE/exec";
+const SHEET_CSV_URL = "YOUR_GOOGLE_SHEET_CSV_URL_HERE"; // Same CSV URL as dashboard.html
 
 // Cumulative fatigue state
 let cumulativePenalty = 0;
@@ -680,6 +685,7 @@ function calculateAndShow() {
   document.getElementById("injuryNote").textContent=riskNote;
   document.getElementById("hoursOut").textContent=composite>=80?"✓ Now":composite>=60?"24 hrs":composite>=40?"48 hrs":"72+ hrs";
   showStep(5);
+  console.log("About to submit — cumulativePenalty value:", cumulativePenalty, typeof cumulativePenalty);
   submitToSheets(composite,balance,trainingLoad,credits,fingerR,forearmR,skinR,cnsR,genR,fingerScore,riskLevel);
 }
 
@@ -706,9 +712,10 @@ function submitToSheets(score,balance,load,credits,fR,faR,sR,cR,gR,fingerScore,r
     cnsReadiness:Math.round(cR),generalReadiness:Math.round(gR),compositeScore:score,
     injuryRisk:risk,recommendation:document.getElementById("recText").textContent,
     sessionRating:state.sessionRating,sentProject:state.sentProject?"Yes":"No",
-    sessionNotes:document.getElementById("sessionNotes").value.trim(),
     earlyTrainingPenalty:cumulativePenalty,
+    sessionNotes:document.getElementById("sessionNotes").value.trim(),
   };
+  console.log("Payload earlyTrainingPenalty:", payload.earlyTrainingPenalty);
   const notice=document.getElementById("submitNotice");
   notice.textContent="Saving to coach dashboard…";
   fetch(SHEETS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
