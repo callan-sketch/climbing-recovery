@@ -113,10 +113,19 @@
     </div>
 
     <div class="card">
+      <label class="field-label">Your age</label>
+      <p class="hint">Adjusts load scoring — 30+ adds 50%, 45+ adds 60%</p>
+      <div class="slider-row">
+        <input type="range" min="14" max="70" value="25" oninput="updateSlider('age',this.value)" />
+        <span class="slider-val" id="ageVal">25</span>
+      </div>
+    </div>
+
+    <div class="card">
       <label class="field-label">Session type</label>
       <div class="chip-row">
         <button class="chip" onclick="selectChip('sessionType','Bouldering',this)">Bouldering</button>
-        <button class="chip" onclick="selectChip('sessionType','Routes',this)">Routes</button>
+        <button class="chip" onclick="selectChip('sessionType','Routes',this)">Lead Climbing</button>
         <button class="chip" onclick="selectChip('sessionType','Strength',this)">Strength</button>
         <button class="chip" onclick="selectChip('sessionType','Conditioning',this)">Conditioning</button>
         <button class="chip" onclick="selectChip('sessionType','Competition',this)">Competition</button>
@@ -157,18 +166,9 @@
       <label class="field-label">Finger hold type</label>
       <div class="chip-row">
         <button class="chip" onclick="selectChip('fingerType','Jugs',this)">Jugs</button>
-        <button class="chip" onclick="selectChip('fingerType','Mixed',this)">Mixed</button>
         <button class="chip" onclick="selectChip('fingerType','Small crimps',this)">Small crimps</button>
         <button class="chip" onclick="selectChip('fingerType','Max crimps',this)">Max crimps</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <label class="field-label">Your age</label>
-      <p class="hint">Adjusts load scoring — 30+ adds 50%, 45+ adds 60%</p>
-      <div class="slider-row">
-        <input type="range" min="14" max="70" value="25" oninput="updateSlider('age',this.value)" />
-        <span class="slider-val" id="ageVal">25</span>
+        <button class="chip" onclick="selectChip('fingerType','Mixed',this)">Mixed</button>
       </div>
     </div>
 
@@ -178,8 +178,8 @@
   <!-- STEP 1: Recovery -->
   <div class="step" id="step1">
     <div class="section-label">Step 2 of 5</div>
-    <div class="section-title">Recovery Credits</div>
-    <div class="section-note">Since your last session. Recovery is training — log it accurately.</div>
+    <div class="section-title">Recovery Credits — Since Your Last Session</div>
+    <div class="section-note">Recovery is training — log it accurately.</div>
     <div id="cumulativeBanner" style="display:none;background:rgba(239,68,68,0.12);border:1.5px solid rgba(239,68,68,0.5);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:#EF4444;line-height:1.6"></div>
 
     <div class="card">
@@ -209,9 +209,12 @@
       </div>
       <div class="slider-labels"><span>Highly unusual</span><span>Exactly normal</span></div>
     </div>
+    <div class="card"><label class="field-label">Rate last night's sleep quality</label>
+      <div class="slider-row"><input type="range" min="0" max="10" value="7" oninput="updateSlider('sleepQuality',this.value)" /><span class="slider-val" id="sleepQualityVal">7</span></div>
+      <div class="slider-labels"><span>Terrible</span><span>Perfect</span></div></div>
 
     <div class="card">
-      <label class="field-label">Water intake (litres)</label>
+      <label class="field-label">Water intake in last 24 hours (litres)</label>
       <p class="hint">1 pt per litre (max 4 pts)</p>
       <div class="slider-row">
         <input type="range" min="0" max="6" value="2" oninput="updateSlider('water',this.value)" />
@@ -221,14 +224,14 @@
     </div>
 
     <div class="card" style="margin-bottom:8px">
-      <label class="field-label" style="margin-bottom:12px">Post-session meal within 1 hour? (2 pts)</label>
+      <label class="field-label" style="margin-bottom:12px">Post-session meal within 2 hours? (2 pts)</label>
       <div class="yn-row">
         <button class="yn-btn yes" onclick="selectYN('postMeal',true,this)">✓ Yes</button>
         <button class="yn-btn no" onclick="selectYN('postMeal',false,this)">✗ No</button>
       </div>
     </div>
     <div class="card" style="margin-bottom:8px">
-      <label class="field-label" style="margin-bottom:12px">Hit daily protein goal? (3 pts)</label>
+      <label class="field-label" style="margin-bottom:12px">Hit daily protein goal? 1.6–2.0 g/kg/day (3 pts)</label>
       <div class="yn-row">
         <button class="yn-btn yes" onclick="selectYN('protein',true,this)">✓ Yes</button>
         <button class="yn-btn no" onclick="selectYN('protein',false,this)">✗ No</button>
@@ -270,7 +273,7 @@
   <!-- STEP 2: Fingers -->
   <div class="step" id="step2">
     <div class="section-label">Step 3 of 5</div>
-    <div class="section-title">Finger Check — Today</div>
+    <div class="section-title">Fingers &amp; Forearms</div>
     <div class="section-note">First two questions: how you felt <strong>this morning</strong>. Last two: what you experienced <strong>during the session</strong>. 0 = no symptom · 10 = severe.</div>
 
     <div class="card">
@@ -295,16 +298,6 @@
     </div>
     <div class="warning-box" id="fingerWarning">⚠️ Finger score ≥5 — high injury risk flag active</div>
 
-    <button class="btn-primary" onclick="nextStep(2)">Continue →</button>
-    <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
-  </div>
-
-  <!-- STEP 3: Body & CNS -->
-  <div class="step" id="step3">
-    <div class="section-label">Step 4 of 5</div>
-    <div class="section-title">Body &amp; CNS</div>
-    <div class="section-note">Forearms, skin, and how your nervous system feels.</div>
-
     <div style="font-size:11px;color:var(--lime);letter-spacing:0.14em;font-weight:700;margin:20px 0 8px">FOREARMS</div>
     <div class="card"><label class="field-label">Forearm soreness</label>
       <div class="slider-row"><input type="range" min="0" max="10" value="0" oninput="updateSlider('forearmSore',this.value)" /><span class="slider-val" id="forearmSoreVal">0</span></div>
@@ -328,7 +321,17 @@
       </div>
     </div>
 
-    <div style="font-size:11px;color:var(--lime);letter-spacing:0.14em;font-weight:700;margin:20px 0 8px">CNS / POWER (1–5)</div>
+    <button class="btn-primary" onclick="nextStep(2)">Continue →</button>
+    <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
+  </div>
+
+  <!-- STEP 3: CNS -->
+  <div class="step" id="step3">
+    <div class="section-label">Step 4 of 5</div>
+    <div class="section-title">CNS</div>
+    <div class="section-note">How your nervous system feels right now. Rate 1–5.</div>
+
+    <div style="font-size:11px;color:var(--lime);letter-spacing:0.14em;font-weight:700;margin:20px 0 8px">CNS (1–5)</div>
     <div class="card"><label class="field-label">Motivation to train</label>
       <div class="slider-row"><input type="range" min="1" max="5" value="3" oninput="updateSlider('motivation',this.value)" /><span class="slider-val" id="motivationVal">3</span></div>
       <div class="slider-labels"><span>None</span><span>Fired up</span></div></div>
@@ -341,11 +344,6 @@
     <div class="card"><label class="field-label">Mental focus</label>
       <div class="slider-row"><input type="range" min="1" max="5" value="3" oninput="updateSlider('focus',this.value)" /><span class="slider-val" id="focusVal">3</span></div>
       <div class="slider-labels"><span>Foggy</span><span>Sharp</span></div></div>
-
-    <div style="font-size:11px;color:var(--lime);letter-spacing:0.14em;font-weight:700;margin:20px 0 8px">GENERAL RECOVERY</div>
-    <div class="card"><label class="field-label">Sleep quality last night</label>
-      <div class="slider-row"><input type="range" min="0" max="10" value="7" oninput="updateSlider('sleepQuality',this.value)" /><span class="slider-val" id="sleepQualityVal">7</span></div>
-      <div class="slider-labels"><span>Terrible</span><span>Perfect</span></div></div>
     <div class="card"><label class="field-label">Stress level</label>
       <div class="slider-row"><input type="range" min="0" max="10" value="3" oninput="updateSlider('stress',this.value)" /><span class="slider-val" id="stressVal">3</span></div>
       <div class="slider-labels"><span>None</span><span>Very high</span></div></div>
@@ -394,8 +392,16 @@
   <div class="step" id="step5">
     <div style="text-align:center;padding:40px 0 8px">
       <div style="font-size:11px;letter-spacing:0.2em;color:var(--muted);margin-bottom:8px">READINESS SCORE</div>
-      <div class="score-big" id="scoreBig">—</div>
-      <div id="statusBadge" class="status-badge"></div>
+      <div style="display:inline-flex;align-items:flex-end;gap:4px">
+        <div class="score-big" id="scoreBig">—</div>
+        <div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--muted);padding-bottom:18px">/100</div>
+      </div>
+      <div id="statusBadge" class="status-badge" style="display:block;margin-top:8px"></div>
+    </div>
+
+    <div class="stat-card" style="margin-top:16px">
+      <div style="font-size:10px;color:var(--muted);letter-spacing:0.14em;margin-bottom:6px">HOURS UNTIL FULL READINESS</div>
+      <div style="font-family:'Space Mono',monospace;font-size:32px;font-weight:700;color:var(--lime)" id="hoursOut"></div>
     </div>
 
     <div id="recBox" class="rec-box">
@@ -403,27 +409,22 @@
       <div class="rec-text" id="recText"></div>
     </div>
 
-    <div style="margin-top:20px">
-      <div style="font-size:10px;letter-spacing:0.16em;color:var(--muted);font-weight:700;margin-bottom:12px">SYSTEM BREAKDOWN</div>
-      <div id="systemRows"></div>
-    </div>
-
     <div class="grid-2">
-      <div class="stat-card">
-        <div style="font-size:10px;color:var(--muted);letter-spacing:0.14em;margin-bottom:8px">RECOVERY BALANCE</div>
-        <div class="stat-num" id="balanceNum"></div>
-        <div class="stat-label">pts</div>
-      </div>
       <div class="stat-card">
         <div style="font-size:10px;color:var(--muted);letter-spacing:0.14em;margin-bottom:8px">INJURY RISK</div>
         <div style="font-size:16px;font-weight:800" id="injuryRisk"></div>
         <div style="font-size:11px;color:var(--muted);margin-top:4px" id="injuryNote"></div>
       </div>
+      <div class="stat-card">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:0.14em;margin-bottom:8px">RECOVERY BALANCE</div>
+        <div class="stat-num" id="balanceNum"></div>
+        <div class="stat-label">pts</div>
+      </div>
     </div>
 
-    <div class="stat-card" style="margin-top:10px">
-      <div style="font-size:10px;color:var(--muted);letter-spacing:0.14em;margin-bottom:6px">HOURS UNTIL FULL READINESS</div>
-      <div style="font-family:'Space Mono',monospace;font-size:32px;font-weight:700;color:var(--lime)" id="hoursOut"></div>
+    <div style="margin-top:20px">
+      <div style="font-size:10px;letter-spacing:0.16em;color:var(--muted);font-weight:700;margin-bottom:12px">INDIVIDUAL SYSTEM SCORES</div>
+      <div id="systemRows"></div>
     </div>
 
     <p class="submit-notice" id="submitNotice"></p>
@@ -434,7 +435,7 @@
   </div>
 </div>
 
-<footer>CRRI · Climbing Recovery &amp; Readiness Index · High Performance Climbing Academy</footer>
+<footer>CRRI · Climbing Recovery &amp; Readiness Index</footer>
 
 <script>
 const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzc6FHLtuCKRx8LQ6w2SKm2XVaBjhf1Suw5m7sg3DGAqYnKoQix_trxKQaq664JylE/exec";
@@ -589,7 +590,7 @@ async function nextStep(current) {
     if(!state.sleepBedtime||!state.sleepWake){alert("Please answer both sleep timing questions.");return;}
     if(yns.some(k=>state[k]===null)){alert("Please answer all Yes/No questions.");return;}
   }
-  if(current===3){
+  if(current===2){
     if(state.skin===null){alert("Please select a skin condition.");return;}
   }
   if(current===4){
@@ -663,7 +664,7 @@ function calculateAndShow() {
   const recBox=document.getElementById("recBox");
   recBox.style.background=col+"11";recBox.style.borderColor=col+"44";
   document.getElementById("recLabel").style.color=col;
-  document.getElementById("recLabel").textContent="TODAY'S SESSION";
+  document.getElementById("recLabel").textContent="SUGGESTION FOR TODAY'S SESSION";
   document.getElementById("recText").textContent=sessionRec(composite,fingerR);
   document.getElementById("systemRows").innerHTML=systems.map(sys=>{
     const c=statusColor(sys.pct);const limiting=sys.pct===minPct;
