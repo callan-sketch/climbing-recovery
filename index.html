@@ -274,6 +274,7 @@
   <div class="step" id="step2">
     <div class="section-label">Step 3 of 5</div>
     <div class="section-title">Fingers &amp; Forearms</div>
+    <div style="font-size:11px;color:var(--lime);letter-spacing:0.14em;font-weight:700;margin:20px 0 4px">FINGERS</div>
     <div class="section-note">First two questions: how you felt <strong>this morning</strong>. Last two: what you experienced <strong>during the session</strong>. 0 = no symptom · 10 = severe.</div>
 
     <div class="card">
@@ -298,7 +299,8 @@
     </div>
     <div class="warning-box" id="fingerWarning">⚠️ Finger score ≥5 — high injury risk flag active</div>
 
-    <div style="font-size:11px;color:var(--lime);letter-spacing:0.14em;font-weight:700;margin:20px 0 8px">FOREARMS</div>
+    <div style="font-size:11px;color:var(--lime);letter-spacing:0.14em;font-weight:700;margin:20px 0 2px">FOREARMS</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">After today's session / now</div>
     <div class="card"><label class="field-label">Forearm soreness</label>
       <div class="slider-row"><input type="range" min="0" max="10" value="0" oninput="updateSlider('forearmSore',this.value)" /><span class="slider-val" id="forearmSoreVal">0</span></div>
       <div class="slider-labels"><span>None</span><span>Severe</span></div></div>
@@ -309,7 +311,8 @@
       <div class="slider-row"><input type="range" min="0" max="10" value="0" oninput="updateSlider('forearmPump',this.value)" /><span class="slider-val" id="forearmPumpVal">0</span></div>
       <div class="slider-labels"><span>Gone</span><span>Still there</span></div></div>
 
-    <div style="font-size:11px;color:var(--lime);letter-spacing:0.14em;font-weight:700;margin:20px 0 8px">SKIN</div>
+    <div style="font-size:11px;color:var(--lime);letter-spacing:0.14em;font-weight:700;margin:20px 0 2px">SKIN</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">After today's session / now</div>
     <div class="card">
       <label class="field-label">Skin condition</label>
       <p class="hint">0 = Perfect · 2 = Thin · 4 = Split tips · 6 = Flappers</p>
@@ -344,8 +347,8 @@
     <div class="card"><label class="field-label">Mental focus</label>
       <div class="slider-row"><input type="range" min="1" max="5" value="3" oninput="updateSlider('focus',this.value)" /><span class="slider-val" id="focusVal">3</span></div>
       <div class="slider-labels"><span>Foggy</span><span>Sharp</span></div></div>
-    <div class="card"><label class="field-label">Stress level</label>
-      <div class="slider-row"><input type="range" min="0" max="10" value="3" oninput="updateSlider('stress',this.value)" /><span class="slider-val" id="stressVal">3</span></div>
+    <div class="card"><label class="field-label">Current stress level</label>
+      <div class="slider-row"><input type="range" min="1" max="5" value="3" oninput="updateSlider('stress',this.value)" /><span class="slider-val" id="stressVal">3</span></div>
       <div class="slider-labels"><span>None</span><span>Very high</span></div></div>
 
     <button class="btn-primary" onclick="nextStep(3)">Continue →</button>
@@ -404,9 +407,9 @@
       <div style="font-family:'Space Mono',monospace;font-size:32px;font-weight:700;color:var(--lime)" id="hoursOut"></div>
     </div>
 
-    <div id="recBox" class="rec-box">
-      <div class="rec-label" id="recLabel"></div>
-      <div class="rec-text" id="recText"></div>
+    <div id="recBox" class="stat-card" style="margin-top:10px;text-align:left">
+      <div class="rec-label" id="recLabel" style="font-size:10px;letter-spacing:0.16em;font-weight:700;margin-bottom:8px"></div>
+      <div class="rec-text" id="recText" style="font-size:16px;font-weight:700;line-height:1.4;color:var(--white)"></div>
     </div>
 
     <div class="grid-2">
@@ -662,7 +665,7 @@ function calculateAndShow() {
   const badge=document.getElementById("statusBadge");
   badge.textContent=statusLabel(composite);badge.style.color=col;badge.style.borderColor=col;badge.style.background=col+"22";
   const recBox=document.getElementById("recBox");
-  recBox.style.background=col+"11";recBox.style.borderColor=col+"44";
+  recBox.style.borderColor=col+"44";
   document.getElementById("recLabel").style.color=col;
   document.getElementById("recLabel").textContent="SUGGESTION FOR TODAY'S SESSION";
   document.getElementById("recText").textContent=sessionRec(composite,fingerR);
