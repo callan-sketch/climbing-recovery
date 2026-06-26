@@ -24,24 +24,16 @@
   .stat-num{font-family:'Space Mono',monospace;font-size:26px;font-weight:700}
   .stat-lbl{font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:0.1em;text-transform:uppercase}
   .back-link{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--lime);text-decoration:none;font-weight:600}
-
-  /* Search screen */
   #searchScreen{padding-top:32px}
   .search-title{font-size:24px;font-weight:700;margin-bottom:8px}
   .search-note{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.5}
   .name-match-warning{background:rgba(197,241,53,0.07);border:1.5px solid rgba(197,241,53,0.3);border-radius:10px;padding:12px 16px;margin-top:12px;font-size:12px;color:var(--lime);line-height:1.6}
-
-  /* Dashboard screen */
   #dashScreen{display:none;padding-top:20px}
   .athlete-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
   .athlete-name{font-size:20px;font-weight:700}
   .sessions-count{font-size:12px;color:var(--muted)}
-
-  /* SVG chart */
   .chart-wrap{padding:8px 0 4px}
   svg.sparkline{width:100%;overflow:visible}
-
-  /* Session list */
   .session-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
   .session-score{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;min-width:40px;text-align:center}
   .session-info{flex:1}
@@ -49,15 +41,13 @@
   .session-date{font-size:11px;color:var(--muted);margin-top:2px}
   .session-badge{font-size:9px;font-weight:700;letter-spacing:0.1em;padding:3px 8px;border-radius:10px;border-width:1px;border-style:solid}
   .session-stars{color:var(--lime);font-size:12px;margin-top:2px}
-
-  /* Correlation panel */
   .corr-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
   .corr-row:last-child{border-bottom:none}
   .corr-label{font-size:12px;color:var(--muted)}
   .corr-val{font-family:'Space Mono',monospace;font-size:14px;font-weight:700}
-
   .loading{text-align:center;padding:40px;color:var(--muted);font-size:14px}
   .error-msg{text-align:center;padding:30px;color:var(--orange);font-size:13px;line-height:1.6}
+  .mini-heading{font-size:10px;letter-spacing:0.14em;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:8px;margin-top:16px}
 </style>
 </head>
 <body>
@@ -73,7 +63,6 @@
     <div style="padding-top:32px">
       <div class="search-title">Your Progress</div>
       <p class="search-note">Enter your name exactly as you use it in the check-in form to load your history.</p>
-
       <div class="card">
         <label style="font-size:13px;font-weight:600;display:block;margin-bottom:10px">Athlete Name</label>
         <input type="text" class="text-input" id="nameInput" placeholder="Enter your name" onkeydown="if(event.key==='Enter')loadDashboard()" />
@@ -82,7 +71,6 @@
           Use the same spelling and capitalisation as your check-in form. "Chris" and "chris" are treated as different athletes.
         </div>
       </div>
-
       <button class="btn-primary" onclick="loadDashboard()" style="margin-top:4px">Load My Dashboard →</button>
       <div id="searchError" style="display:none" class="error-msg"></div>
     </div>
@@ -98,13 +86,28 @@
       <button onclick="showSearch()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px">← Back</button>
     </div>
 
-    <!-- Stats -->
+    <!-- Readiness Scores -->
+    <div class="mini-heading">Readiness Scores</div>
     <div class="grid-3">
-      <div class="stat-card"><div class="stat-num" id="statAvg">—</div><div class="stat-lbl">Avg Score</div></div>
-      <div class="stat-card"><div class="stat-num" id="statBest">—</div><div class="stat-lbl">Best</div></div>
+      <div class="stat-card">
+        <div style="display:inline-flex;align-items:flex-end;gap:2px">
+          <div class="stat-num" id="statAvg">—</div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);padding-bottom:4px">/100</div>
+        </div>
+        <div class="stat-lbl">Avg Score</div>
+      </div>
+      <div class="stat-card">
+        <div style="display:inline-flex;align-items:flex-end;gap:2px">
+          <div class="stat-num" id="statBest">—</div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);padding-bottom:4px">/100</div>
+        </div>
+        <div class="stat-lbl">Best</div>
+      </div>
       <div class="stat-card"><div class="stat-num" id="statTrend">—</div><div class="stat-lbl">Trend</div></div>
     </div>
 
+    <!-- Performance Scores -->
+    <div class="mini-heading">Performance Scores</div>
     <div class="grid-2">
       <div class="stat-card"><div class="stat-num" id="statAvgRating" style="color:var(--lime)">—</div><div class="stat-lbl">Avg Session ★</div></div>
       <div class="stat-card"><div class="stat-num" id="statProjects" style="color:var(--green)">—</div><div class="stat-lbl">Projects Sent</div></div>
@@ -126,11 +129,11 @@
     <div class="section-label">Readiness vs Performance</div>
     <div class="card" id="corrPanel">
       <div class="corr-row">
-        <span class="corr-label">Avg score on ★★★★★ sessions</span>
+        <span class="corr-label">Average readiness score on ★★★★★ sessions</span>
         <span class="corr-val" id="corrHigh">—</span>
       </div>
       <div class="corr-row">
-        <span class="corr-label">Avg score on ★★ or below sessions</span>
+        <span class="corr-label">Average readiness score on ★★ or below sessions</span>
         <span class="corr-val" id="corrLow">—</span>
       </div>
       <div class="corr-row">
@@ -138,7 +141,7 @@
         <span class="corr-val" id="corrSent">—</span>
       </div>
       <div class="corr-row">
-        <span class="corr-label">Avg readiness when no project</span>
+        <span class="corr-label">Avg readiness when no project sent</span>
         <span class="corr-val" id="corrNoSent">—</span>
       </div>
       <div class="corr-row" style="border-bottom:none;padding-top:14px">
@@ -157,12 +160,7 @@
 </div>
 
 <script>
-// ── REPLACE THIS with your Google Apps Script Web App URL ──
-// It must be the SAME URL as in index.html
 const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzc6FHLtuCKRx8LQ6w2SKm2XVaBjhf1Suw5m7sg3DGAqYnKoQix_trxKQaq664JylE/exec";
-
-// ── REPLACE THIS with your published Google Sheet CSV URL ──
-// In Google Sheets: File → Share → Publish to web → Sheet1 → CSV → Copy link
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1-FENufMgGAeprv_QTdqocOc5JhZjKp7jxmhyf2QNq1rH-iydQQC7i7RsQ5BvK6Yg933eP53It0k6/pub?gid=1962231271&single=true&output=csv";
 
 function statusColor(s){return s>=80?"#22C55E":s>=60?"#EAB308":s>=40?"#F97316":"#EF4444";}
@@ -177,48 +175,35 @@ function showSearch(){
 async function loadDashboard() {
   const name = document.getElementById("nameInput").value.trim();
   if(!name){alert("Please enter your name.");return;}
-
   const errEl = document.getElementById("searchError");
   errEl.style.display="none";
-
   if(SHEET_CSV_URL==="YOUR_GOOGLE_SHEET_CSV_URL_HERE"){
-    errEl.innerHTML="⚠️ Google Sheet CSV URL not configured yet.<br><br>In your Google Sheet: <strong>File → Share → Publish to web → Sheet1 → CSV → Copy link</strong><br>Then paste it into dashboard.html where it says YOUR_GOOGLE_SHEET_CSV_URL_HERE.";
-    errEl.style.display="block";
-    return;
+    errEl.innerHTML="⚠️ Google Sheet CSV URL not configured yet.";
+    errEl.style.display="block";return;
   }
-
   errEl.textContent="Loading your data…";errEl.style.display="block";errEl.style.color="var(--muted)";
-
   try {
     const resp = await fetch(SHEET_CSV_URL);
     const text = await resp.text();
     const rows = parseCSV(text);
     if(rows.length<2){errEl.textContent="No data found in sheet.";errEl.style.color="var(--orange)";return;}
-
     const headers = rows[0].map(h=>h.trim().toLowerCase().replace(/\s+/g,"_"));
     const data = rows.slice(1).map(row=>{
       const obj={};
       headers.forEach((h,i)=>obj[h]=row[i]||"");
       return obj;
     });
-
-    // Match athlete name (case-insensitive trim)
     const athlete = data.filter(r=>r.athlete_name&&r.athlete_name.trim().toLowerCase()===name.toLowerCase());
-
     if(athlete.length===0){
-      errEl.innerHTML=`No sessions found for "<strong>${name}</strong>".<br><br>Make sure the spelling matches exactly what you entered in the check-in form. Names are case-insensitive but must otherwise match.`;
-      errEl.style.color="var(--orange)";errEl.style.display="block";
-      return;
+      errEl.innerHTML=`No sessions found for "<strong>${name}</strong>".<br><br>Make sure the spelling matches exactly what you entered in the check-in form.`;
+      errEl.style.color="var(--orange)";errEl.style.display="block";return;
     }
-
-    // Sort by timestamp
     athlete.sort((a,b)=>new Date(a.timestamp)-new Date(b.timestamp));
     renderDashboard(name, athlete);
     errEl.style.display="none";
     document.getElementById("searchScreen").style.display="none";
     document.getElementById("dashScreen").style.display="block";
     window.scrollTo({top:0,behavior:"smooth"});
-
   } catch(e) {
     errEl.innerHTML="Could not load sheet data. Make sure the CSV URL is correct and the sheet is published publicly.<br><br>Error: "+e.message;
     errEl.style.color="var(--orange)";errEl.style.display="block";
@@ -243,11 +228,8 @@ function renderDashboard(name, sessions) {
   const scores = sessions.map(s=>Number(s.composite_score)||0);
   const ratings = sessions.map(s=>Number(s.session_rating)||0).filter(r=>r>0);
   const projects = sessions.filter(s=>s.sent_project&&s.sent_project.toLowerCase()==="yes").length;
-
   const avg = scores.length ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : 0;
   const best = scores.length ? Math.max(...scores) : 0;
-
-  // Trend: compare last 3 vs previous 3
   let trend="—";
   if(scores.length>=6){
     const last3=scores.slice(-3).reduce((a,b)=>a+b,0)/3;
@@ -256,9 +238,7 @@ function renderDashboard(name, sessions) {
   } else if(scores.length>=2){
     trend=scores[scores.length-1]>scores[0]?"↑":scores[scores.length-1]<scores[0]?"↓":"→";
   }
-
   const avgRating = ratings.length ? (ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1) : "—";
-
   document.getElementById("dashName").textContent=name;
   document.getElementById("dashCount").textContent=`${sessions.length} session${sessions.length!==1?"s":""} logged`;
   document.getElementById("statAvg").textContent=avg;
@@ -269,20 +249,14 @@ function renderDashboard(name, sessions) {
   document.getElementById("statTrend").style.color=trend==="↑"?"#22C55E":trend==="↓"?"#EF4444":"#6B7280";
   document.getElementById("statAvgRating").textContent=avgRating==="—"?"—":avgRating+"★";
   document.getElementById("statProjects").textContent=projects;
-
-  // Chart
   const chartData = sessions.slice(-14);
   drawChart(chartData);
-
-  // Correlation
   const highPerf = sessions.filter(s=>Number(s.session_rating)>=4).map(s=>Number(s.composite_score)).filter(Boolean);
   const lowPerf  = sessions.filter(s=>Number(s.session_rating)>0&&Number(s.session_rating)<=2).map(s=>Number(s.composite_score)).filter(Boolean);
   const sentSc   = sessions.filter(s=>s.sent_project&&s.sent_project.toLowerCase()==="yes").map(s=>Number(s.composite_score)).filter(Boolean);
   const noSentSc = sessions.filter(s=>s.sent_project&&s.sent_project.toLowerCase()==="no").map(s=>Number(s.composite_score)).filter(Boolean);
-
   const avgOf = arr=>arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):null;
   const fmtScore = v=>v!==null?`${v}/100`:"Not enough data";
-
   document.getElementById("corrHigh").textContent=fmtScore(avgOf(highPerf));
   document.getElementById("corrHigh").style.color=highPerf.length?statusColor(avgOf(highPerf)):"var(--muted)";
   document.getElementById("corrLow").textContent=fmtScore(avgOf(lowPerf));
@@ -291,8 +265,6 @@ function renderDashboard(name, sessions) {
   document.getElementById("corrSent").style.color=sentSc.length?statusColor(avgOf(sentSc)):"var(--muted)";
   document.getElementById("corrNoSent").textContent=fmtScore(avgOf(noSentSc));
   document.getElementById("corrNoSent").style.color=noSentSc.length?statusColor(avgOf(noSentSc)):"var(--muted)";
-
-  // Insight
   let insight="Log more sessions to unlock performance insights. After 10+ sessions you'll start to see which readiness score predicts your best climbing.";
   if(highPerf.length>=2&&lowPerf.length>=2){
     const diff=avgOf(highPerf)-avgOf(lowPerf);
@@ -304,8 +276,6 @@ function renderDashboard(name, sessions) {
     if(d>8)insight+=` You tend to send projects when your readiness is ${d} points higher.`;
   }
   document.getElementById("corrInsight").textContent=insight;
-
-  // Session log
   const logEl=document.getElementById("sessionLog");
   logEl.innerHTML=[...sessions].reverse().slice(0,20).map(s=>{
     const sc=Number(s.composite_score)||0;
@@ -331,38 +301,28 @@ function drawChart(sessions) {
   const W=svg.parentElement.clientWidth||320;
   const H=110;svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
   const pad=12;const w=W-pad*2;const h=H-pad*2-16;
-
-  // Zone lines
   const zones=[{v:80,c:"#22C55E"},{v:60,c:"#EAB308"},{v:40,c:"#F97316"}];
   let html="<defs><linearGradient id='cg' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#C5F135' stop-opacity='0.2'/><stop offset='100%' stop-color='#C5F135' stop-opacity='0'/></linearGradient></defs>";
-
   zones.forEach(z=>{
     const y=pad+h-((z.v/100)*h);
     html+=`<line x1="${pad}" y1="${y}" x2="${pad+w}" y2="${y}" stroke="${z.c}" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>`;
   });
-
   if(sessions.length<2){svg.innerHTML=html+`<text x="${W/2}" y="${H/2}" text-anchor="middle" fill="#6B7280" font-size="12" font-family="Space Grotesk">Not enough data yet</text>`;return;}
-
   const pts=sessions.map((s,i)=>{
     const x=pad+(i/(sessions.length-1))*w;
     const y=pad+h-((Math.min(100,Math.max(0,Number(s.composite_score)||0))/100)*h);
     return{x,y,s};
   });
-
   const path=pts.map((p,i)=>`${i===0?"M":"L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
   const area=`${path} L${pts[pts.length-1].x},${pad+h} L${pts[0].x},${pad+h} Z`;
-
   html+=`<path d="${area}" fill="url(#cg)"/>`;
   html+=`<path d="${path}" fill="none" stroke="#C5F135" stroke-width="2" stroke-linejoin="round"/>`;
   pts.forEach(p=>{
     const col=statusColor(Number(p.s.composite_score)||0);
     html+=`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="${col}" stroke="#0D0F14" stroke-width="2"/>`;
-    // Rating dot overlay
     if(Number(p.s.session_rating)>=4)html+=`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="7" fill="none" stroke="#C5F135" stroke-width="1.5" opacity="0.6"/>`;
   });
   svg.innerHTML=html;
-
-  // Date labels
   const datesEl=document.getElementById("chartDates");
   if(sessions.length<=7){
     datesEl.innerHTML=sessions.map(s=>`<span style="font-size:9px;color:var(--muted)">${s.timestamp?new Date(s.timestamp).toLocaleDateString("en",{day:"numeric",month:"short"}):"?"}</span>`).join("");
