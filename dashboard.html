@@ -87,7 +87,7 @@
     </div>
 
     <!-- Readiness Scores -->
-    <div class="mini-heading">Readiness Scores</div>
+    <div class="section-label">Readiness Scores</div>
     <div class="grid-3">
       <div class="stat-card">
         <div style="display:inline-flex;align-items:flex-end;gap:2px">
@@ -107,11 +107,14 @@
     </div>
 
     <!-- Performance Scores -->
-    <div class="mini-heading">Performance Scores</div>
+    <div class="section-label">Performance Scores</div>
     <div class="grid-2">
       <div class="stat-card"><div class="stat-num" id="statAvgRating" style="color:var(--lime)">—</div><div class="stat-lbl">Avg Session ★</div></div>
       <div class="stat-card"><div class="stat-num" id="statProjects" style="color:var(--green)">—</div><div class="stat-lbl">Projects Sent</div></div>
     </div>
+
+    <!-- Early Training Warning -->
+    <div id="earlyTrainingWarning" style="display:none;background:rgba(239,68,68,0.12);border:1.5px solid rgba(239,68,68,0.5);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:#EF4444;line-height:1.6"></div>
 
     <!-- Score graph -->
     <div class="section-label">Readiness Score — Last 14 Sessions</div>
@@ -276,6 +279,26 @@ function renderDashboard(name, sessions) {
     if(d>8)insight+=` You tend to send projects when your readiness is ${d} points higher.`;
   }
   document.getElementById("corrInsight").textContent=insight;
+  // Early training warning
+  const warningEl = document.getElementById("earlyTrainingWarning");
+  const lastSession = sessions[sessions.length - 1];
+  if(lastSession) {
+    const lastScore = Number(lastSession.composite_score) || 0;
+    const lastTime = new Date(lastSession.timestamp);
+    const now = new Date();
+    const hrsElapsed = (now - lastTime) / 3600000;
+    const required = lastScore >= 80 ? 0 : lastScore >= 60 ? 24 : lastScore >= 40 ? 48 : 72;
+    const hrsShort = required - hrsElapsed;
+    if(required > 0 && hrsShort > 0) {
+      const penalty = hrsShort <= 12 ? 5 : hrsShort <= 24 ? 10 : 15;
+      const lastDate = lastTime.toLocaleDateString("en", {day:"numeric",month:"short"});
+      warningEl.innerHTML = `⚠️ <strong>Early training warning</strong><br>Your last session on ${lastDate} scored ${lastScore} — recommended recovery: ${required} hrs. You have trained ${Math.round(hrsElapsed)} hrs later (${Math.round(hrsShort)} hrs short). A <strong>-${penalty} point penalty</strong> will be applied to your next readiness score.`;
+      warningEl.style.display = "block";
+    } else {
+      warningEl.style.display = "none";
+    }
+  }
+
   const logEl=document.getElementById("sessionLog");
   logEl.innerHTML=[...sessions].reverse().slice(0,20).map(s=>{
     const sc=Number(s.composite_score)||0;
