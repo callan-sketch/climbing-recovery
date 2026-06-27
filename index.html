@@ -169,6 +169,7 @@
         <button class="chip" onclick="selectChip('fingerType','Small crimps',this)">Small crimps</button>
         <button class="chip" onclick="selectChip('fingerType','Max crimps',this)">Max crimps</button>
         <button class="chip" onclick="selectChip('fingerType','Mixed',this)">Mixed</button>
+        <button class="chip" onclick="selectChip('fingerType','N/A',this)">N/A — No climbing</button>
       </div>
     </div>
 
@@ -586,7 +587,7 @@ async function nextStep(current) {
   if(current===0){
     const name=document.getElementById("athleteName").value.trim();
     if(!name){alert("Please enter your name.");return;}
-    if(!state.sessionType||!state.fingerType){alert("Please select a session type and finger hold type.");return;}
+    if(!state.sessionType||!state.fingerType){alert("Please select a session type and finger hold type (or N\/A if no climbing).");return;}
     await lookupLastSession();
   }
   if(current===1){
