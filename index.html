@@ -430,6 +430,7 @@
       <div id="systemRows"></div>
     </div>
 
+    <div id="earlyTrainingNotice" style="display:none;background:rgba(239,68,68,0.10);border:1.5px solid rgba(239,68,68,0.4);border-radius:10px;padding:12px 16px;margin-top:10px;font-size:12px;color:#EF4444;line-height:1.6"></div>
     <p class="submit-notice" id="submitNotice"></p>
 
     <button class="btn-primary" onclick="resetForm()" style="margin-top:20px">Log Another Session</button>
@@ -689,6 +690,13 @@ function calculateAndShow() {
   document.getElementById("injuryNote").textContent=riskNote;
   document.getElementById("hoursOut").textContent=composite>=80?"✓ Now":composite>=60?"24 hrs":composite>=40?"48 hrs":"72+ hrs";
   showStep(5);
+  const etNotice = document.getElementById("earlyTrainingNotice");
+  if(cumulativePenalty > 0 && lastSessionInfo) {
+    etNotice.innerHTML = `⚠️ <strong>Early training penalty applied</strong><br>Your last session scored ${lastSessionInfo.score} — recommended recovery: ${lastSessionInfo.required} hrs. You trained ${lastSessionInfo.hrsElapsed} hrs later (${lastSessionInfo.hrsShort} hrs short). A <strong>-${cumulativePenalty} point penalty</strong> has been applied to your score.`;
+    etNotice.style.display = "block";
+  } else {
+    etNotice.style.display = "none";
+  }
   console.log("About to submit — cumulativePenalty value:", cumulativePenalty, typeof cumulativePenalty);
   submitToSheets(composite,balance,trainingLoad,credits,fingerR,forearmR,skinR,cnsR,genR,fingerScore,riskLevel);
 }
@@ -746,6 +754,7 @@ function resetForm() {
   document.getElementById("fingerWarning").style.display="none";
   document.getElementById("submitNotice").textContent="";
   document.getElementById("submitNotice").style.color="";
+  document.getElementById("earlyTrainingNotice").style.display="none";
   ["duration","intensity","limitAttempts","age","sleepConsistency","water",
    "fingerStiff","fingerFist","fingerCrimp","fingerHang",
    "forearmSore","forearmTight","forearmPump",
